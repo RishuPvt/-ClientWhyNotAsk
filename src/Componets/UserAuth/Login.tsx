@@ -1,6 +1,44 @@
+import axios from "axios";
 import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { backendUrl } from "../API/Api";
 const Login: React.FC = () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await axios.post(`${backendUrl}/users/login`, formData, {
+        withCredentials: true,
+      });
+      if (response.status === 200) {
+        toast.success(response.data.message || "User login successful!");
+        navigate("/home"); // Navigate to the dashboard
+      }
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message || "Failed to login. Please try again.";
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="bg-white p-8 rounded-lg shadow-md w-full flex flex-col md:flex-row h-screen">
       {/* Sign Up Section */}
@@ -46,7 +84,10 @@ const Login: React.FC = () => {
           <p className="text-base text-gray-500 text-center mb-6">
             Please enter your credentials to log in to your account.
           </p>
-          <form className="flex flex-col justify-center">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col justify-center"
+          >
             <div className="mb-6">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
@@ -57,6 +98,9 @@ const Login: React.FC = () => {
               <input
                 id="email"
                 type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
                 className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Enter your email"
               />
@@ -71,19 +115,21 @@ const Login: React.FC = () => {
               <input
                 id="password"
                 type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
                 className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Enter your password"
               />
             </div>
             <div className="flex items-center justify-between">
-              <Link to="/home">
               <button
                 type="submit"
+                disabled={loading}
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
               >
-                Login
+                {loading ? "Logging in..." : "Login"}
               </button>
-              </Link>
             </div>
           </form>
         </div>
