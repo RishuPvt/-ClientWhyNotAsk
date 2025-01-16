@@ -1,32 +1,77 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { backendUrl } from "../API/Api";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 interface RegisterFormData {
   username: string;
   password: string;
   email: string;
-  avatar?: string;
+  bio: string;
+  avatar?: string | null;
+  fullName: string;
 }
 
 const Register: React.FC = () => {
   const [formData, setFormData] = useState<RegisterFormData>({
     username: "",
+    fullName: "",
     password: "",
     email: "",
     avatar: "",
+    bio: "",
   });
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData({ ...formData, [name]: value });
+  };
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    setFormData({ ...formData, avatar: files ? files[0]?.name : "" });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form Data:", formData);
+    setLoading(true);
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      const form = new FormData();
+      form.append("username", formData.username);
+      form.append("bio", formData.bio);
+      form.append("fullName", formData.fullName);
+      form.append("email", formData.email);
+      form.append("password", formData.password);
+
+      if (formData.avatar) {
+        form.append("avatar", formData.avatar);
+      }
+      const response = await axios.post(
+        `${backendUrl}/users/RegisterUser`,
+        form,
+        config
+      );
+
+      if (response.status === 200) {
+        toast.success(response.data.message || "User registered successful!");
+        navigate("/"); // Navigate to the login
+      }
+      toast.success(response.data.message || "User registered successfully!");
+      setLoading(false);
+    } catch (error: any) {
+      console.log(error);
+      toast.error(
+        error.response?.data?.message || "Failed to register. Please try again."
+      );
+      setLoading(false);
+    }
   };
 
   return (
@@ -44,7 +89,7 @@ const Register: React.FC = () => {
             "Welcome back, we've missed you!"
           </p>
           <p className="text-gray-500 text-center font-extrabold mb-6 italic">
-            "Reconnect with your goals!"
+            "Reconnect with your Tweet!"
           </p>
           <div className="flex justify-center">
             <Link
@@ -87,7 +132,24 @@ const Register: React.FC = () => {
                 id="username"
                 name="username"
                 value={formData.username}
-                onChange={handleChange}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="fullName"
+                className="block text-gray-700 font-bold mb-2"
+              >
+                FullName
+              </label>
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleInputChange}
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
                 required
               />
@@ -105,7 +167,7 @@ const Register: React.FC = () => {
                 id="email"
                 name="email"
                 value={formData.email}
-                onChange={handleChange}
+                onChange={handleInputChange}
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
                 required
               />
@@ -123,7 +185,25 @@ const Register: React.FC = () => {
                 id="password"
                 name="password"
                 value={formData.password}
-                onChange={handleChange}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="bio"
+                className="block text-gray-700 font-bold mb-2"
+              >
+                Bio
+              </label>
+              <input
+                type="bio"
+                id="bio"
+                name="bio"
+                value={formData.bio}
+                onChange={handleInputChange}
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
                 required
               />
@@ -136,23 +216,22 @@ const Register: React.FC = () => {
               >
                 Avatar (Optional)
               </label>
+
               <input
                 type="file"
                 id="avatar"
                 name="avatar"
-                value={formData.avatar}
-                onChange={handleChange}
+                onChange={handleFileChange}
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
               />
             </div>
-            <Link to="/home">
-              <button
-                type="submit"
-                className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-300"
-              >
-                Register
-              </button>
-            </Link>
+            <button
+              disabled={loading}
+              type="submit"
+              className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-300"
+            >
+              {loading ? "Registering..." : "Register"}
+            </button>
           </form>
         </div>
       </div>
