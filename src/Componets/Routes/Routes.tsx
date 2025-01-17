@@ -24,7 +24,7 @@ const ProfileRouter: React.FC = () => {
         <Route path="/Update-account" element={<UpdateDetails />} />
         <Route path="/update-UserAvatar" element={<ChangeAvatar />} />
         <Route path="/Change-password" element={<Changepassword />} />
-        <Route path="/TweetDetails" element={<TweetDetails />} />
+        <Route path="/TweetDetails/:questionId" element={<TweetDetails />} />
 
 
 
