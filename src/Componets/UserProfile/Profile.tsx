@@ -6,6 +6,8 @@ import toast from "react-hot-toast";
 import Header from "../Header/Header";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Spinner5 from "../UI/Spinner";
+
 interface User {
   username: string;
   email: string;
@@ -59,13 +61,9 @@ const UserProfile: React.FC = () => {
   };
 
   if (loading) {
-    return (
-      <p className="flex align-center justify-center text-4xl font-bold  ">
-        Loading...
-      </p>
-    );
+    return <Spinner5 />;
   }
-  
+
   return (
     <div className="bg-gradient-to-b from-blue-100 to-white min-h-screen">
       <Header />
