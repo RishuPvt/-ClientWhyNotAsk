@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { backendUrl } from "../API/Api";
 import toast from "react-hot-toast";
+import { Loader } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface TweetCardProps {
   username: string;
@@ -137,31 +139,38 @@ const TweetCard: React.FC<TweetCardProps> = ({
             @{username}
           </div>
         </div>
+        <Link to={`/TweetDetails/${questionId}`}>
+          <h3 className="text-lg md:text-2xl font-semibold text-gray-900">
+            {title}
+          </h3>
+          <p className="mt-2 text-sm md:text-base text-gray-600">
+            {description}
+          </p>
+          <p className="text-xs text-gray-400">
+            {new Date(createdAt).toLocaleString()}
+          </p>
 
-        <h3 className="text-lg md:text-2xl font-semibold text-gray-900">
-          {title}
-        </h3>
-        <p className="mt-2 text-sm md:text-base text-gray-600">{description}</p>
-        <p className="text-xs text-gray-400">
-          {new Date(createdAt).toLocaleString()}
-        </p>
+          {media && (
+            <div className="mt-4">
+              <img
+                src={media}
+                alt="Tweet Media"
+                className="w-full rounded-lg"
+              />
+            </div>
+          )}
 
-        {media && (
           <div className="mt-4">
-            <img src={media} alt="Tweet Media" className="w-full rounded-lg" />
+            {tags.map((tag, index) => (
+              <span
+                key={index}
+                className="inline-block  text-blue-800 text-xs md:text-sm px-3 py-1 rounded-full mr-2 mb-2"
+              >
+                {tag}
+              </span>
+            ))}
           </div>
-        )}
-
-        <div className="mt-4">
-          {tags.map((tag, index) => (
-            <span
-              key={index}
-              className="inline-block  text-blue-800 text-xs md:text-sm px-3 py-1 rounded-full mr-2 mb-2"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
+        </Link>
       </div>
 
       {/* Update Popup */}
@@ -250,9 +259,9 @@ const TweetCardProp: React.FC = () => {
 
   if (loading) {
     return (
-      <p className="flex justify-center text-2xl md:text-4xl font-bold">
-        Loading...
-      </p>
+      <div className="flex justify-center items-center min-h-[400px]">
+        <Loader className="w-8 h-8 animate-spin text-blue-500" />
+      </div>
     );
   }
 
