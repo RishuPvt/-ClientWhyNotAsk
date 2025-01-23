@@ -10,6 +10,8 @@ import UpdateDetails from "../UserProfile/EditProfile";
 import ChangeAvatar from "../UserProfile/Editavatar";
 import Changepassword from "../UserProfile/Changepassword";
 import TweetDetails from "../Tweet/TweetDetails";
+import AllComments from "../Categoery/AllComments";
+import UserProfile from "../UserTweet/UserProfile";
 const ProfileRouter: React.FC = () => {
   return (
     <Router>
@@ -25,10 +27,10 @@ const ProfileRouter: React.FC = () => {
         <Route path="/update-UserAvatar" element={<ChangeAvatar />} />
         <Route path="/Change-password" element={<Changepassword />} />
         <Route path="/TweetDetails/:questionId" element={<TweetDetails />} />
-
-
-
-
+        <Route path="/mycomments" element={<AllComments />} />
+        <Route path="/ownerprofile" element={<UserProfile />} />
+        
+        
       </Routes>
     </Router>
   );
