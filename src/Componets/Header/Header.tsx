@@ -12,7 +12,7 @@ const Header: React.FC = () => {
   ];
 
   return (
-    <header className="bg-black text-white shadow-lg opacity-[0.5]">
+    <header className="bg-black text-white shadow-lg md:opacity-[0.5]">
       <div className="container mx-auto p-4 flex justify-between items-center hidden md:flex">
         {/* Hide title on mobile */}
         <div className="text-2xl font-bold tracking-wide hidden md:block">
