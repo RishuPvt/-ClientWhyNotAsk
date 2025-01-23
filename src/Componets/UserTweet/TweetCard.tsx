@@ -122,6 +122,7 @@ const TweetCard: React.FC<TweetCardProps> = ({
       {/* Tweet Content */}
       <div>
         <div className="flex items-center space-x-4 mb-4">
+          <Link to="/ownerprofile" >
           <div className="w-10 h-10 md:w-12 md:h-12 bg-gray-300 rounded-full flex items-center justify-center">
             {avatar ? (
               <img
@@ -138,6 +139,7 @@ const TweetCard: React.FC<TweetCardProps> = ({
           <div className="text-sm md:text-lg font-bold text-gray-800">
             @{username}
           </div>
+        </Link>
         </div>
         <Link to={`/TweetDetails/${questionId}`}>
           <h3 className="text-lg md:text-2xl font-semibold text-gray-900">
