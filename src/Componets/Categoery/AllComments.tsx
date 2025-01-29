@@ -4,8 +4,6 @@ import axios from "axios";
 import { backendUrl } from "../API/Api";
 import Spinner5 from "../UI/Spinner";
 
-
-
 interface CommentProps {
   username: string;
   title: string;
@@ -14,7 +12,7 @@ interface CommentProps {
   media: string;
   avatar: string;
   tweetmedia: string;
-  content:string;
+  content: string;
   createdAt: string;
 }
 
@@ -83,15 +81,6 @@ const CommentCard: React.FC<CommentProps> = ({
   );
 };
 
-
-
-
-
-
-
-
-
-
 const AllComments: React.FC = () => {
   const [comments, setcomment] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -115,7 +104,7 @@ const AllComments: React.FC = () => {
           questionId: comments.question.id,
           createdAt: comments.createdAt,
           tweetmedia: comments.question.media,
-          content : comments.content
+          content: comments.content,
         }));
         setcomment(formattedComments);
       } catch (error) {
