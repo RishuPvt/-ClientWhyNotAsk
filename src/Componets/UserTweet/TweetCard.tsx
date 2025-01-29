@@ -14,6 +14,7 @@ interface TweetCardProps {
   avatar?: string;
   questionId: string;
   createdAt: string;
+  id:string;
 }
 
 const TweetCard: React.FC<TweetCardProps> = ({
@@ -25,6 +26,7 @@ const TweetCard: React.FC<TweetCardProps> = ({
   avatar,
   questionId,
   createdAt,
+  id,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -122,7 +124,7 @@ const TweetCard: React.FC<TweetCardProps> = ({
       {/* Tweet Content */}
       <div>
         <div className="flex items-center space-x-4 mb-4">
-          <Link to="/ownerprofile" >
+          <Link to={`/ownerprofile/${id}`} >
           <div className="w-10 h-10 md:w-12 md:h-12 bg-gray-300 rounded-full flex items-center justify-center">
             {avatar ? (
               <img
@@ -245,6 +247,7 @@ const TweetCardProp: React.FC = () => {
           tags: tweet.tags,
           media: tweet.media,
           avatar: tweet.owner.avatar,
+          id:tweet.owner.id,
           questionId: tweet.id,
           createdAt: tweet.createdAt,
         }));
@@ -281,6 +284,7 @@ const TweetCardProp: React.FC = () => {
             avatar={tweet.avatar}
             questionId={tweet.questionId}
             createdAt={tweet.createdAt}
+            id={tweet.id}
           />
         ))
       ) : (
