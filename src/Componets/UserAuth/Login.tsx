@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { backendUrl } from "../API/Api";
+import { useUserStore } from "../Zustand/zustandstore";
+
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -28,6 +30,15 @@ const Login: React.FC = () => {
       });
       if (response.status === 200) {
         toast.success(response.data.message || "User login successful!");
+        const userData = response.data.message;
+
+        useUserStore.getState().setUser({
+          username: userData.username,
+          id: userData.id,
+          isAuth: true,
+        });
+        console.log(useUserStore.getState());
+
         navigate("/home"); // Navigate to the dashboard
       }
     } catch (error: any) {
