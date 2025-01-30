@@ -28,7 +28,7 @@ const ProfileRouter: React.FC = () => {
         <Route path="/Change-password" element={<Changepassword />} />
         <Route path="/TweetDetails/:questionId" element={<TweetDetails />} />
         <Route path="/mycomments" element={<AllComments />} />
-        <Route path="/ownerprofile" element={<UserProfile />} />
+        <Route path="/ownerprofile/:id" element={<UserProfile />} />
         
         
       </Routes>
