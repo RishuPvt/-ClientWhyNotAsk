@@ -4,7 +4,7 @@ import { backendUrl } from "../API/Api";
 import toast from "react-hot-toast";
 import { Loader } from "lucide-react";
 import { Link } from "react-router-dom";
-
+import { useUserStore } from "../Zustand/zustandstore";
 interface TweetCardProps {
   username: string;
   title: string;
@@ -14,7 +14,7 @@ interface TweetCardProps {
   avatar?: string;
   questionId: string;
   createdAt: string;
-  id:string;
+  id: string;
 }
 
 const TweetCard: React.FC<TweetCardProps> = ({
@@ -28,6 +28,7 @@ const TweetCard: React.FC<TweetCardProps> = ({
   createdAt,
   id,
 }) => {
+  const userStore = useUserStore();
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [popupOpen, setPopupOpen] = useState(false);
@@ -35,6 +36,9 @@ const TweetCard: React.FC<TweetCardProps> = ({
     description: "",
     title: "",
   });
+console.log(id);
+console.log(userStore.id , "this is store id");
+
 
   const handleToggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -100,9 +104,12 @@ const TweetCard: React.FC<TweetCardProps> = ({
     <div className="max-w-full md:max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden p-4 md:p-6 relative mb-4">
       {/* Menu Button */}
       <div className="absolute top-2 right-2">
-        <button onClick={handleToggleMenu} className="focus:outline-none">
-          ⋮
-        </button>
+        {userStore.id === id ? (
+          <button onClick={handleToggleMenu} className="focus:outline-none">
+            ⋮
+          </button>
+        ) : null}
+
         {menuOpen && (
           <div className="absolute right-0 mt-2 w-32 bg-white border rounded-lg shadow-lg">
             <button
@@ -124,24 +131,24 @@ const TweetCard: React.FC<TweetCardProps> = ({
       {/* Tweet Content */}
       <div>
         <div className="flex items-center space-x-4 mb-4">
-          <Link to={`/ownerprofile/${id}`} >
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-gray-300 rounded-full flex items-center justify-center">
-            {avatar ? (
-              <img
-                src={avatar}
-                alt="Avatar"
-                className="rounded-full w-full h-full"
-              />
-            ) : (
-              <span className="text-gray-600 font-bold text-lg">
-                {username.charAt(0).toUpperCase()}
-              </span>
-            )}
-          </div>
-          <div className="text-sm md:text-lg font-bold text-gray-800">
-            @{username}
-          </div>
-        </Link>
+          <Link to={`/ownerprofile/${id}`}>
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-gray-300 rounded-full flex items-center justify-center">
+              {avatar ? (
+                <img
+                  src={avatar}
+                  alt="Avatar"
+                  className="rounded-full w-full h-full"
+                />
+              ) : (
+                <span className="text-gray-600 font-bold text-lg">
+                  {username.charAt(0).toUpperCase()}
+                </span>
+              )}
+            </div>
+            <div className="text-sm md:text-lg font-bold text-gray-800">
+              @{username}
+            </div>
+          </Link>
         </div>
         <Link to={`/TweetDetails/${questionId}`}>
           <h3 className="text-lg md:text-2xl font-semibold text-gray-900">
@@ -247,7 +254,7 @@ const TweetCardProp: React.FC = () => {
           tags: tweet.tags,
           media: tweet.media,
           avatar: tweet.owner.avatar,
-          id:tweet.owner.id,
+          id: tweet.ownerId,
           questionId: tweet.id,
           createdAt: tweet.createdAt,
         }));

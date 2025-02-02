@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Header from "../Header/Header2";
 import axios from "axios";
 import { backendUrl } from "../API/Api";
 import Spinner5 from "../UI/Spinner";
@@ -120,7 +119,6 @@ const AllComments: React.FC = () => {
   }
   return (
     <>
-      <Header />
       <div className="container mx-auto mt-6 px-4">
         {comments.length > 0 ? (
           comments.map((comment, index) => (

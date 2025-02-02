@@ -12,9 +12,12 @@ import Changepassword from "../UserProfile/Changepassword";
 import TweetDetails from "../Tweet/TweetDetails";
 import AllComments from "../Categoery/AllComments";
 import UserProfile from "../UserTweet/UserProfile";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 const ProfileRouter: React.FC = () => {
   return (
     <Router>
+      <Header/>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Register />} />
@@ -32,6 +35,8 @@ const ProfileRouter: React.FC = () => {
         
         
       </Routes>
+      <Footer/>
+
     </Router>
   );
 };

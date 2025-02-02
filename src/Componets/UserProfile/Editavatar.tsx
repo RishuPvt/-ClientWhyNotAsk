@@ -72,7 +72,6 @@ const ChangeAvatar: React.FC = () => {
 
   return (
     <>
-    <Header/>
       <div className="mt-[15px] flex flex-col items-center justify-center p-8 bg-white shadow-lg rounded-xl max-w-md mx-auto border border-gray-200">
         <form onSubmit={handleSubmit} className="w-full" >
           {/* Label for Avatar */}

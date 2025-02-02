@@ -1,5 +1,4 @@
 import React from 'react';
-import Header from '../Header/Header';
 import { Link } from 'react-router-dom';
 
 const TweetCategoryCard: React.FC = () => {
@@ -14,7 +13,6 @@ const TweetCategoryCard: React.FC = () => {
 
   return (
     <>
-    <Header />
     <div className="container mx-auto px-4 py-10">
       <h2 className="text-3xl font-bold text-center mb-6">Choose Your Tweet Category</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

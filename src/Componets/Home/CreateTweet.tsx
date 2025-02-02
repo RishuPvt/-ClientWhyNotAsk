@@ -82,8 +82,6 @@ const TweetForm: React.FC = () => {
   return (
     <>
       <div className="min-h-screen bg-black-to-br from-white-50 to-blue-50 dark:from-white-900 dark:to-gray-800 relative overflow-hidden">
-        <Header />
-
         {/* Cubic lines background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="cubic-pattern"></div>

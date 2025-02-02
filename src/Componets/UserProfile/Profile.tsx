@@ -7,6 +7,7 @@ import Header from "../Header/Header";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Spinner5 from "../UI/Spinner";
+import { useUserStore } from "../Zustand/zustandstore";
 
 interface User {
   username: string;
@@ -17,6 +18,7 @@ interface User {
 }
 
 const UserProfile: React.FC = () => {
+  const userStore = useUserStore()
   const [user, setUser] = useState<User | null>(null);
   const [loading, setloading] = useState(true);
   const navigate = useNavigate();
@@ -49,6 +51,12 @@ const UserProfile: React.FC = () => {
           withCredentials: true,
         }
       );
+      useUserStore.getState().setUser({
+        username: "",
+        id: "",
+        isAuth: false,
+      });
+      console.log(useUserStore.getState());
       toast.success(response.data.message || "User logout successful!");
       navigate("/");
     } catch (error: any) {
@@ -66,7 +74,6 @@ const UserProfile: React.FC = () => {
 
   return (
     <div className="bg-gradient-to-b from-blue-100 to-white min-h-screen">
-      <Header />
       <div className="container mx-auto px-4 py-10">
         {/* Profile Section */}
         <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg p-8 mb-10 transition-transform duration-300 hover:scale-105">
@@ -116,6 +123,15 @@ const UserProfile: React.FC = () => {
               </Link>
             </div>
           </div>
+          {userStore.isAuth===true ?(
+          <span className="w-[30px] h-[30px] object-cover rounded-full shadow-lg border-4 border-blue-300 bg-green-500">
+          </span>
+          ):(
+            <span className="w-[30px] h-[30px] object-cover rounded-full shadow-lg border-4  bg-orange-500">
+          </span>
+
+          )}
+
         </div>
       </div>
     </div>
