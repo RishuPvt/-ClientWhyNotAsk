@@ -14,7 +14,44 @@ import AllComments from "../Categoery/AllComments";
 import UserProfile from "../UserTweet/UserProfile";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { backendUrl } from "../API/Api";
+import { useUserStore } from "../Zustand/zustandstore";
 const ProfileRouter: React.FC = () => {
+  const [loading, setloading] = useState(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`${backendUrl}/users/getCurrentUser`, {
+          withCredentials: true,
+        });
+  
+        if (response.status === 200) {
+          console.log(response.data.message || "User login successful!");
+          const userData = response.data.data;
+  
+          useUserStore.getState().setUser({
+            username: userData.name,
+            id: userData.id,
+            isAuth: true,
+          });
+        }
+      } catch (error: any) {
+        console.error("Caught error:", error);
+  
+        const errorMessage =
+          error.response?.data?.message ||
+          "Failed to authenticate. Please try again.";
+        console.error(errorMessage);
+      } finally {
+        setloading(false);
+      }
+    };
+    fetchUser();
+  }, []);
+
   return (
     <Router>
       <Header/>
@@ -38,7 +75,10 @@ const ProfileRouter: React.FC = () => {
       <Footer/>
 
     </Router>
-  );
-};
+
+  )
+}
+
+
 
 export default ProfileRouter;

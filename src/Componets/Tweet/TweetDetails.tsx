@@ -238,7 +238,7 @@ const TweetDetails: FC<TweetDetailsProps> = ({
 
                 {/* Comment action buttons */}
                 <div className="flex space-x-2">
-                  {userStore.id === id ? (
+                  {userStore.id === comment.owner.id ? (
                     <button
                       className="text-red-500 hover:text-red-700"
                       onClick={() => handleDelete(comment.id)}
@@ -416,7 +416,6 @@ const TweetList: FC = () => {
   return (
     <>
       <div className="min-h-screen bg-black-to-br from-white-50 to-blue-50 dark:from-white-900 dark:to-gray-800 relative overflow-hidden">
-    
         {/* Cubic lines background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="cubic-pattern"></div>
